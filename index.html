@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="author" content="Lilian">
+        <title>Bear Ninja Hunter</title>
+        <link rel="stylesheet" href="css/style.css" type="text/css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cormorant">
+    </head>
+    <body>
+        <div>
+            <p id="gameOutput"></p>
+        </div>
+        <script type="text/javascript">
+            // Staging Area: declare all variables first
+            let playerName = '';
+            let playerChoice = '';
+            let playerChoiceLower = '';
+            let gameResultMessage = '';
+            let randomIndex = -1;
+            let computerChoice = '';
+            let computerChoiceLower = '';
+            let winner = '';
+            let playAgain = '';
+            let playAgainLower = '';
+
+            const Choices = ['bear', 'ninja', 'hunter'];
+
+            // Ask user for their name
+            playerName = prompt('Welcome to Bear Hunter Ninja! Please enter your name to get started: ');
+
+            if (playerName === null || playerName.trim() === '') {
+                gameResultMessage = 'Please Press F5 to Play Again.'
+            } else {
+                // Display greeting
+                alert(`Hi ${playerName} Let\'s Play!!`);
+
+                // Main game loop
+                do {
+                    // Ask user for character choice
+                    playerChoice = prompt('Who are you: Bear, Ninja, or Hunter?');
+
+                    // Cancel handling
+                    if (playerChoice === null) {
+                        gameResultMessage = 'Please Press F5 to Play Again.'
+                        break;
+                    }
+                    
+                    playerChoiceLower = playerChoice.toLowerCase();
+
+                    // Invalid input handling
+                    if (!Choices.includes(playerChoiceLower)) {
+                        gameResultMessage = 'Invalid Entry<br>Please Press F5 to Play Again.'
+                        break;
+                    }
+
+                    // Capitalize player choice
+                    playerChoice = playerChoiceLower.charAt(0).toUpperCase() + playerChoiceLower.slice(1);
+
+                    // Random computer choice
+                    randomIndex = Math.floor(Math.random() * Choices.length);
+
+                    for (let i = 0; i < Choices.length; i++) {
+                        if (i === randomIndex) {
+                            computerChoiceLower = Choices[i];
+                            computerChoice = computerChoiceLower.charAt(0).toUpperCase() + computerChoiceLower.slice(1);
+                        }
+                    }
+                    
+                    // Determine winner using switch + if/else
+                    switch (playerChoice) {
+                        case 'Bear':
+                            if (computerChoice === 'Bear') {
+                                winner = 'Tie!!';
+                            } else if (computerChoice === 'Ninja') {
+                                winner = "You Win!!";
+                            } else {
+                                winner = "Computer Win!!";
+                            }
+                            break;
+
+                        case 'Ninja':
+                            if (computerChoice === 'Ninja') {
+                                winner = 'Tie!!';
+                            } else if (computerChoice === 'Hunter') {
+                                winner = 'You Win!!';
+                            } else {
+                                winner = "Computer Win!!";
+                            }
+                            break;
+
+                        case 'Hunter':
+                            if (computerChoice === 'Hunter') {
+                                winner = 'Tie!!';
+                            } else if (computerChoice === 'Bear') {
+                                winner = 'You Win!!';
+                            } else {
+                                winner = "Computer Win!!";
+                            }
+                            break;
+
+                        default:
+                            console.log('Invalid input sent to switch.');
+                    }
+
+                    // Display results of each play
+                    gameResultMessage  = 
+                        `${playerName}, you picked ${playerChoiceLower}!\n` +
+                        `The Computer picked ${computerChoiceLower}!\n` + 
+                        winner;
+
+                    playAgain = prompt(
+                        gameResultMessage + '\n\n' + 
+                        playerName + ', would you like to play again, Yes or No?');
+
+                    // Cancel handling
+                    if (playAgain === null)
+                    {
+                        prompt(gameResultMessage);
+                        break;
+                    }
+
+                    playAgainLower = playAgain.toLowerCase();
+
+                    // Not play again
+                    if (playAgainLower !== 'yes') {
+                        gameResultMessage =
+                            `${playerName} you chose ${playerChoice}!<br>` +
+                            `The computer chose ${computerChoice}!<br>` + 
+                            '<span class="winner">' + winner + '</span>';
+                        
+                        prompt(gameResultMessage
+                            .replaceAll('<br>', '\n')
+                            .replaceAll('<span class="winner">', '')
+                            .replaceAll('</span>', ''));
+                    }
+                } while (playAgainLower === 'yes')    
+            }
+
+            // Output results to the HTML page and the console
+            document.getElementById('gameOutput').innerHTML = gameResultMessage;
+            console.log(gameResultMessage .replaceAll('<br>', '\n'));
+        </script>
+    </body>
+</html>
