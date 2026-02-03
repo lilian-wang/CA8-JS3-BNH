@@ -25,6 +25,7 @@
             let winner = '';
             let playAgain = '';
             let playAgainLower = '';
+            let isSuccessfulGame = false;
 
             const Choices = ['bear', 'ninja', 'hunter'];
 
@@ -39,6 +40,9 @@
 
                 // Main game loop
                 do {
+                    // Reset successful game
+                    isSuccessfulGame = false;
+
                     // Ask user for character choice
                     playerChoice = prompt('Who are you: Bear, Ninja, or Hunter?');
 
@@ -105,6 +109,9 @@
                             console.log('Invalid input sent to switch.');
                     }
 
+                    // Mark a successful game occurred
+                    isSuccessfulGame = true;
+                    
                     // Display results of each play
                     gameResultMessage  = 
                         `${playerName}, you picked ${playerChoiceLower}!\n` +
@@ -118,30 +125,30 @@
                     // Cancel handling
                     if (playAgain === null)
                     {
-                        prompt(gameResultMessage);
                         break;
                     }
 
                     playAgainLower = playAgain.toLowerCase();
-
-                    // Not play again
-                    if (playAgainLower !== 'yes') {
-                        gameResultMessage =
-                            `${playerName} you chose ${playerChoice}!<br>` +
-                            `The computer chose ${computerChoice}!<br>` + 
-                            '<span class="winner">' + winner + '</span>';
-                        
-                        prompt(gameResultMessage
-                            .replaceAll('<br>', '\n')
-                            .replaceAll('<span class="winner">', '')
-                            .replaceAll('</span>', ''));
-                    }
                 } while (playAgainLower === 'yes')    
             }
 
             // Output results to the HTML page and the console
+            if (isSuccessfulGame)
+            {
+                gameResultMessage =
+                    `${playerName} you chose ${playerChoice}!<br>` +
+                    `The computer chose ${computerChoice}!<br>` + 
+                    '<span class="winner">' + winner + '</span>';
+                            
+                prompt(gameResultMessage
+                    .replaceAll('<br>', '\n')
+                    .replaceAll('<span class="winner">', '')
+                    .replaceAll('</span>', ''));
+                
+                console.log(gameResultMessage .replaceAll('<br>', '\n'));
+            }
+            
             document.getElementById('gameOutput').innerHTML = gameResultMessage;
-            console.log(gameResultMessage .replaceAll('<br>', '\n'));
         </script>
     </body>
 </html>
